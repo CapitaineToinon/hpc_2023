@@ -8,6 +8,7 @@ Ce qui n'était pas le cas avant 2005.
 La justification de cette date sera donnée lors la partie théorique du cours. 
 
 L'idée est simple: pourquoi se limiter à un seul CPU (ou core) quand on en a plusieurs à notre disposition pour résoudre un problème?
+C'est un peu l'approche de force brute: plus on a de muscles, plus on peut taper fort.
 
 ## Threads et mémoire partagée
 
@@ -99,15 +100,18 @@ Tout ceci sera pratiqué dans les exercices ci-dessous.
 
 ## Calcul de pi en parallèle
 
-Implémentez la méthode de Monte Carlo pour approximer la valeure de pi en générant un grand nombre de points aléatoires dans le carré unitaire et en comptant le nombre de points qui tombent dans le cercle unitaire inclus dans le carré. 
-La proportion de nombre de points qui tombent dans le cercle permettent d'approximer pi.
-Pour ceci, on multiplie ce rapport par 4.
+Le but de cet exercice est d'approximer la valeure de pi.
+
+Pour ceci, implémentez la méthode de Monte Carlo.
+La méthode consiste à générer un grand nombre de points aléatoires dans le carré unitaire et de compter le nombre de points qui tombent dans le cercle unitaire inclus dans le carré. 
+La proportion de nombre de points qui tombent dans le cercle permettent d'approximer pi/4.
 C'est une méthode que vous avez probablement vue plusieurs fois au cours de vos études, ici même à HEPIA.
 
 Pour ceci:
 - écrivez une fonction qui génère des points aléatoires dans le carré unitaire et retourne le nombre qui tombent dans le cercle.
 Cette fonction sera la tâche de vos threads, elle prendra en paramètre le nombre de points à générer par le thread.
 - Calculez le rapport pour approximer pi en sommant les contributions de vos threads.
+Si vous le souhaitez, ceci peut se faire dans le thread principal.
 
 Vous être libre d'implémenter votre programme comme bon vous semble, mais suivez les points suivants:
 - comparez l'approximation avec la valeure de pi calculée avec la constante `M_PI` dans la librairie `math.h`.
@@ -116,7 +120,7 @@ Ceci pour vous assurer que votre implémentation soit correcte.
 
 ## Somme en parallèle
 
-Le but de cet exercice est très simple: il s'agit de calculer la somme des éléments d'un vecteur de doubles.
+Le but de cet exercice est de calculer la somme des éléments d'un vecteur de doubles.
 
 Commencez par une implémentation naïve.
 Une basée sur une simple boucle ``for`` devrait faire l'affaire:
