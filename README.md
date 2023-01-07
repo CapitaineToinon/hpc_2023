@@ -20,9 +20,11 @@ On résoud ces sous-problèmes par le biais d'autres processus (qu'ils soient l�
 Si nécessaire, on combine les solutions des sous-problèmes pour obtenir la solution du grand problème.
 
 L'intéret de cette approche est d'exploiter les architectures courantes, dites multi-core ou multi-CPU (ce dernier terme étant, à mon avis, plus correcte que le premier).
-Les threads **concurrents** seront potentiellement exécutés sur les différents CPU de la puce.
-Ce qui implique que certains sous-problèmes seront résolus en même temps, c'est-à-dire en **parallèle**.
+Les threads **concurrents** seront potentiellement exécutés sur les différents CPUs de la puce.
+Ce qui implique que certains sous-problèmes devraient résolus en même temps, c'est-à-dire en **parallèle**.
 Mais comme tout ce qui touche à la concurrence, on en est jamais vraiment sûr.
+Ce dernier point sera résolu avec l'utilisation du cluster de l'UniGE qui incorpore des noeuds de calculs de l'HEPIA.
+Mais pour le moment, nous nous limitons à nos propres machines.
 
 Tout ceci sera pratiqué dans l'exercice ci-dessous.
 
