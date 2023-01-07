@@ -28,7 +28,9 @@ Mais comme tout ce qui touche à la concurrence, on en est jamais vraiment sûr.
 Ce dernier point sera résolu avec l'utilisation du cluster de l'UniGE qui incorpore des noeuds de calculs de l'HEPIA.
 Mais pour le moment, nous nous limitons à nos propres machines.
 
-Ci-dessous un bref rappel des thread Posix
+## Les thread Posix
+
+Voici  bref rappel des thread Posix
 Mais très très bref.
 Veuillez vous référer à votre cours de concurrence pour plus de détail ou au `man` de votre machine.
 
