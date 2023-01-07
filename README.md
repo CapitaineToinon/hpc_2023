@@ -46,7 +46,7 @@ où `tid` est l'id du thread de type `pthread_t`,
 
 On rappelle que:
 - `f` retourne un `void*` mais ce pointeur peut toujours être casté dans le type désiré.
-Notez que l'espace mémoire est partagé, donc si nécessaire, les threads peuvent aussi accéder à une variable commune (partagée).
+Notez que l'espace mémoire est partagé, donc si nécessaire, les threads peuvent aussi accéder à une variable commune (càd. partagée ou _shared_).
 - Si la fonciton `f` ne prend aucun argument, on passe `NULL`.
 - S'il faut passer plusieurs argument à `f`, on utilise habituellement une `struct` pour `f_args`.
 
