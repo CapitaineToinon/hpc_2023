@@ -7,6 +7,8 @@ En effet, la majorité des approches qui seront étudiées dans ce cours ne sont
 Ce qui n'était pas le cas avant 2005.
 La justification de cette date sera donnée lors la partie théorique du cours. 
 
+L'idée est simple: pourquoi se limiter à un seul CPU (ou core) quand on en a plusieurs à notre disposition pour résoudre un problème?
+
 ## Threads et mémoire partagée
 
 Il n'est pas nécessaire de vous introduire le modèle à mémoire partagée (shared memory), ni les technologies ou librairie pour cette séance, étant donné que tout a déjà été étudié lors du cours de concurrence.
@@ -26,29 +28,71 @@ Mais comme tout ce qui touche à la concurrence, on en est jamais vraiment sûr.
 Ce dernier point sera résolu avec l'utilisation du cluster de l'UniGE qui incorpore des noeuds de calculs de l'HEPIA.
 Mais pour le moment, nous nous limitons à nos propres machines.
 
-Tout ceci sera pratiqué dans les exercices ci-dessous.
-
-## Bref rappel des thread Posix
-
+Ci-dessous un bref rappel des thread Posix
 Mais très très bref.
 Veuillez vous référer à votre cours de concurrence pour plus de détail ou au `man` de votre machine.
 
 On rappelle qu'un thread Posix se crée avec:
+
 ```c
 pthread_create(&tid, NULL, f, (void*) &f_args);
 ```
+
 où `tid` est l'id du thread de type `pthread_t`,
 `f` la tâche à exécuter par le thread et `f_args` l'argument de `f`.
-On rappelle que `f` retourne un `void*`.
 
-Une fois les threads terminés, on joint ces derniers avec: 
+On rappelle que:
+- `f` retourne un `void*` mais ce pointeur peut toujours être casté dans le type désiré.
+Notez que l'espace mémoire est partagé, donc si nécessaire, les threads peuvent aussi accéder à une variable commune (partagée).
+- S'il faut passer plusieurs argument à `f`, on utilise habituellement une `struct`.
+
+Une fois que les threads ont accompli leur tâche, il faut assurer de libérer les ressources prise par les threads correctement. 
+Ceci se fait avec la fonction `pthread_exit`:
 ```c
-pthread_join(tid, NULL);
+void* thread_func(void* arg) {
+  // Thread code goes here
+  pthread_exit(NULL);
+}
 ```
-où `tid` est comme prédécemment l'id du thread de type `pthread_t`.
+
+À noter que si on souhaite retourner un pointeur non `NULL` on peut faire, par exemple:
+```c
+void* thread_func(void* arg) {
+  int result = 0;
+  // Thread code goes here
+  pthread_exit((void*)result);
+}
+```
+où le retour est dans `pthread_exit`.
+
+Pour terminer on joint les threads dans le thread principal.
+Typiquement, dans le `main`:
+
+```c
+pthread_t tid;
+pthread_create(&tid, NULL, thread_func, NULL);
+void* res;
+pthread_join(tid, &res);
+int result = (int)res;
+```
+
+Attention, il faut noter que la fonction `pthread_exit` ne libère pas automatiquement toutes les ressources allouée dans le thread. 
+En effet, si des ressources ont été allouées dynamiquement, il faut les libérer manuellement avant d'appeler `pthread_exit`.
+Par exemple:
+
+```c
+void* thread_func(void* arg) {
+  int* result = malloc(sizeof(int));
+  // Thread code goes here
+  free(result);
+  pthread_exit((void*)result);
+}
+```
 
 On rappelle également que les définitions sont dans `pthread.h` et qu'il faut passer la librairie `pthread` pour l'éditeur de lien (avec `gcc` l'option est `-l`).
 Si nécessaire, installez cette librairie sur votre machine.
+
+Tout ceci sera pratiqué dans les exercices ci-dessous.
 
 ## Calcul de pi en parallèle
 
