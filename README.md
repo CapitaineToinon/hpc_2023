@@ -61,7 +61,10 @@ Pour ceci:
 - écrivez une fonction qui génère des points aléatoires dans le carré unitaire et compte le nombre qui tombent dans le cercle.
 - Divisez cette tâche de génération et décompte de points sur plusieurs threads en utilisant les fonctions `pthread_create` and `pthread_join`.
 - Calculez le rapport pour approximer pi.
-- Comparez l'approximation avec la valeure de pi calculée avec la constante `M_PI` dans la librairie `math.h`.
+
+Vous être libre d'implémenter votre programme comme bon vous semble, mais suivez les points suivants:
+- comparez l'approximation avec la valeure de pi calculée avec la constante `M_PI` dans la librairie `math.h`.
+Ceci pour vous assurer que votre implémentation soit correcte. 
 - Votre programme prend à la ligne de commande deux entiers: (1) le nombre de point totaux à générer, (2) le nombres de threads.
 
 ## Somme en parallèle
