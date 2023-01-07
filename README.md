@@ -46,9 +46,10 @@ où `tid` est l'id du thread de type `pthread_t`,
 On rappelle que:
 - `f` retourne un `void*` mais ce pointeur peut toujours être casté dans le type désiré.
 Notez que l'espace mémoire est partagé, donc si nécessaire, les threads peuvent aussi accéder à une variable commune (partagée).
+- Si la fonciton `f` ne prend aucun argument, on passe `NULL`.
 - S'il faut passer plusieurs argument à `f`, on utilise habituellement une `struct` pour `f_args`.
 
-Une fois que les threads ont accompli leur tâche, il faut assurer de libérer les ressources prise par les threads correctement. 
+Une fois que les threads ont accompli leur tâche, il faut s'assurer de libérer les ressources prise par les threads correctement. 
 Ceci se fait avec la fonction `pthread_exit`:
 ```c
 void* thread_func(void* arg) {
@@ -98,15 +99,15 @@ Tout ceci sera pratiqué dans les exercices ci-dessous.
 
 ## Calcul de pi en parallèle
 
-Implémentez la méthode de Monte Carlo pour approximer la valeure de pi en générant un grand nombre de points aléatoires dans le carré unitaire et en comptant le nombre de points qui tombent dans le cercle unitaire (donc inclus dans le carré). 
+Implémentez la méthode de Monte Carlo pour approximer la valeure de pi en générant un grand nombre de points aléatoires dans le carré unitaire et en comptant le nombre de points qui tombent dans le cercle unitaire inclus dans le carré. 
 La proportion de nombre de points qui tombent dans le cercle permettent d'approximer pi.
+Pour ceci, on multiplie ce rapport par 4.
 C'est une méthode que vous avez probablement vue plusieurs fois au cours de vos études, ici même à HEPIA.
 
 Pour ceci:
-
-- écrivez une fonction qui génère des points aléatoires dans le carré unitaire et compte le nombre qui tombent dans le cercle.
-- Divisez cette tâche de génération et décompte de points sur plusieurs threads en utilisant les fonctions `pthread_create` and `pthread_join`.
-- Calculez le rapport pour approximer pi.
+- écrivez une fonction qui génère des points aléatoires dans le carré unitaire et retourne le nombre qui tombent dans le cercle.
+Cette fonction sera la tâche de vos threads, elle prendra en paramètre le nombre de points à générer par le thread.
+- Calculez le rapport pour approximer pi en sommant les contributions de vos threads.
 
 Vous être libre d'implémenter votre programme comme bon vous semble, mais suivez les points suivants:
 - comparez l'approximation avec la valeure de pi calculée avec la constante `M_PI` dans la librairie `math.h`.
@@ -144,14 +145,14 @@ Utilisez la pour vérifier que votre programme est correcte.
 
 ## Mesures de performance
 
-Une fois votre implémentation terminée, mesurez le gain obtenu par le parallélisme.
+Une fois vos implémentation terminées, mesurez le gain obtenu par le parallélisme.
 Pour ceci procédez à des mesures des temps d'exécution de vos implémentations séquentielles et parallèles.
 
 Pour ce type de mesures il faut noter les points suivants:
 - la version séquentielle (non-parallèle) est censée être la meilleure implémentation séquentielle possible.
 En effet, il serait pas très malin de penser que le gain de parallélisme est bon si la version séquentielle de référence n'est pas la plus efficace. 
 
-- En pratique, dans ce cours, on a pas toujours accès à cette implémentation. Elle peut même s'avérée compliquer à implémenter.
+- En pratique, dans ce cours, on a pas toujours accès à cette implémentation. Elle peut même s'avérer compliquée à implémenter.
 Un bonne exemple d'implémentation séquentielle compliquée peut être la multiplication de matrices carrées.
 Dans ce cas et uniquement pour ce cours, on se rabattra sur une implémentation séquentielle **naïve**.
 
@@ -174,13 +175,17 @@ Idéalement, pour faire de telles mesures, on utilise un script qui automatise l
 Comprenez-vous bien la différence entre exécution concurrente et exécution parallèle ? 
 Est-ce que l'une implique l'autre ?
 
-À votre avis, dans le problème de la somme, est-ce qu'il y a un intéret à augmenter le nombre de threads ? 
+À votre avis, dans les problèmes implémetés lors de cette séance, est-ce qu'il y a un intéret à augmenter le nombre de threads ? 
 Si oui, jusqu'à quel point ? 
 Y-a-t-il une limite ?
 
 On vous a demandé précédemment de combiner les sommes partielles dans le thread principale.
 À votre avis, est-ce que ceci vous semble optimal ?
 Pouvez-vous proposer une stratégie plus intéressante en terme de performance ?
+
+On a proposé précédemment et pour ce cours, de se rabattre sur une implémentation séquentielle naïve pour évaluer les performances de l'implémentation parallèle.
+À votre avis, pouvons nous-utiliser l'implémentation parallèle en utilisant un seul thread ?
+Notez que concrètement, il y aura deux threads: le principale (toujours) et le thread léger. 
 
 # Solutions
 
