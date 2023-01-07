@@ -62,7 +62,8 @@ void* thread_func(void* arg) {
 À noter que si on souhaite retourner un pointeur non `NULL` on peut faire, par exemple:
 ```c
 void* thread_func(void* arg) {
-  int result = 0;
+  int* result = (int*) malloc(sizeof(int));
+  *result = 0;
   // Thread code goes here
   pthread_exit((void*) &result);
 }
