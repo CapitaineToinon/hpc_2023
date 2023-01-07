@@ -52,6 +52,8 @@ Vous être libre d'implémenter votre programme comme bon vous semble, mais suiv
 - implémentez une fonction qui initialise un vecteur de taille `n` qui contient les entiers alland de 1 à `n`.
 Notez que le type des valeurs doit être `double`.
 C'est sur ce vecteur que la somme sera calculée.
+L'avantage est que la somme est connue, il s'agit de `n*(n+1)/2`.
+Utilisez la pour vérifier que votre programme est correcte.
 
 - votre programme prend à la ligne de commande deux entiers: (1) la taille du vecteur à sommer, (2) le nombres de threads.
 
