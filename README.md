@@ -64,7 +64,7 @@ void* thread_func(void* arg) {
 void* thread_func(void* arg) {
   int result = 0;
   // Thread code goes here
-  pthread_exit((void*)result);
+  pthread_exit((void*) &result);
 }
 ```
 où le retour est dans `pthread_exit`.
@@ -77,7 +77,7 @@ pthread_t tid;
 pthread_create(&tid, NULL, thread_func, NULL);
 void* res;
 pthread_join(tid, &res);
-int result = (int)res;
+int* result = (int*) res;
 ```
 
 Attention, il faut noter que la fonction `pthread_exit` ne libère pas automatiquement toutes les ressources allouée dans le thread. 
@@ -94,7 +94,11 @@ void* thread_func(void* arg) {
 ```
 
 On rappelle également que les définitions sont dans `pthread.h` et qu'il faut passer la librairie `pthread` pour l'éditeur de lien (avec `gcc` l'option est `-l`).
+Donc ajouer: `-lpthread`.
 Si nécessaire, installez cette librairie sur votre machine.
+
+Pensez également à ajouter `-O3`.
+Si vous ne connaissez pas cette option, veuillez vous référer au `man` de gcc.
 
 Tout ceci sera pratiqué dans les exercices ci-dessous.
 
@@ -173,6 +177,22 @@ Après avoir suivi le cours de concurrence, ceci devrait être une évidence.
 
 Faites donc varier le nombre de thread ainsi que la taille du vecteur et mesurez les temps d'exécution.
 Idéalement, pour faire de telles mesures, on utilise un script qui automatise l'exécution.
+
+Notez que vous pouvez mesurer votre temps d'exécution directement dans votre code.
+L'extrait suivant devrait vous aider:
+
+```c
+struct timespec start, finish;
+clock_gettime(CLOCK_MONOTONIC, &start);
+
+// code à mesurer
+
+clock_gettime(CLOCK_MONOTONIC, &finish);
+double seconds_elapsed = finish.tv_sec-start.tv_sec;
+seconds_elapsed += (finish.tv_nsec-start.tv_nsec)/1.0e9;
+```
+
+Vous devez inclure `time.h` pour que ceci fonctionne et compiler avec `-std=gnu11`.
 
 ## Questions
 
