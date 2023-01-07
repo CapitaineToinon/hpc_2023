@@ -11,8 +11,8 @@ La justification de cette date sera donnée lors la partie théorique du cours.
 
 Il n'est pas nécessaire de vous introduire le modèle à mémoire partagée (shared memory), ni les technologies ou librairie pour cette séance, étant donné que tout a déjà été étudié lors du cours de concurrence.
 
-En effet, lors de ce cours vous avez étudié les threads Posix de manière à procéder à une exécution **concurrente** des tâches: un thread léger par tâche, qui sont spawnées par le thread principal.
-Et le modèle à mémoire partagée implique simplement que tous les threads partagent le même espace mémoire. Grossièrement, c'est-à-dire que tous peuvent lire et écrire dans des variables communes, dites partagées.
+En effet, lors de ce cours vous avez étudié les threads Posix de manière à procéder à une exécution **concurrente** des tâches: un thread léger par tâche, qui sont créés par le thread principal.
+Le modèle à mémoire partagée implique simplement que tous les threads partagent le même espace mémoire. Grossièrement, c'est-à-dire que tous peuvent lire et écrire dans des variables communes, dites partagées.
 
 Dans le cadre de cet exercice, nous allons invoquer plusieurs threads qui vont collaborer à la résolution d'une tâche unique.
 L'idée sera souvent la même: on découpe un grand problème en plusieurs sous-problèmes, si possible en sous-problèmes indépendants.
