@@ -16,7 +16,7 @@ Le modèle à mémoire partagée implique simplement que tous les threads partag
 
 Dans le cadre de cet exercice, nous allons invoquer plusieurs threads qui vont collaborer à la résolution d'une tâche unique.
 L'idée sera souvent la même: on découpe un grand problème en plusieurs sous-problèmes, si possible en sous-problèmes indépendants.
-On résoud ces sous-problèmes par le biais d'un autre processus (léger ou lourd).
+On résoud ces sous-problèmes par le biais d'autres processus (qu'ils soient légers ou lourds).
 Si nécessaire, on combine les solutions des sous-problèmes pour obtenir la solution du grand problème.
 
 L'intéret de cette approche est d'exploiter les architectures courantes, dites multi-core ou multi-CPU (ce dernier terme étant, à mon avis, plus correcte que le premier).
