@@ -26,7 +26,43 @@ Mais comme tout ce qui touche à la concurrence, on en est jamais vraiment sûr.
 Ce dernier point sera résolu avec l'utilisation du cluster de l'UniGE qui incorpore des noeuds de calculs de l'HEPIA.
 Mais pour le moment, nous nous limitons à nos propres machines.
 
-Tout ceci sera pratiqué dans l'exercice ci-dessous.
+Tout ceci sera pratiqué dans les exercices ci-dessous.
+
+## Bref rappel des thread Posix
+
+Mais très très bref.
+Veuillez vous référer à votre cours de concurrence pour plus de détail ou au `man` de votre machine.
+
+On rappelle qu'un thread Posix se crée avec:
+```c
+pthread_create(&tid, NULL, f, (void*) &f_args);
+```
+où `tid` est l'id du thread de type `pthread_t`,
+`f` la tâche à exécuter par le thread et `f_args` l'argument de `f`.
+On rappelle que `f` retourne un `void*`.
+
+Une fois les threads terminés, on joint ces derniers avec: 
+```c
+pthread_join(tid, NULL);
+```
+où `tid` est comme prédécemment l'id du thread de type `pthread_t`.
+
+On rappelle également que les définitions sont dans `pthread.h` et qu'il faut passer la librairie `pthread` pour l'éditeur de lien (avec `gcc` l'option est `-l`).
+Si nécessaire, installez cette librairie sur votre machine.
+
+## Calcul de pi en parallèle
+
+Implémentez la méthode de Monte Carlo pour approximer la valeure de pi en générant un grand nombre de points aléatoires dans le carré unitaire et en comptant le nombre de points qui tombent dans le cercle unitaire (donc inclus dans le carré). 
+La proportion de nombre de points qui tombent dans le cercle permettent d'approximer pi.
+C'est une méthode que vous avez probablement vue plusieurs fois au cours de vos études, ici même à HEPIA.
+
+Pour ceci:
+
+- écrivez une fonction qui génère des points aléatoires dans le carré unitaire et compte le nombre qui tombent dans le cercle.
+- Divisez cette tâche de génération et décompte de points sur plusieurs threads en utilisant les fonctions `pthread_create` and `pthread_join`.
+- Calculez le rapport pour approximer pi.
+- Comparez l'approximation avec la valeure de pi calculée avec la constante `M_PI` dans la librairie `math.h`.
+- Votre programme prend à la ligne de commande deux entiers: (1) le nombre de point totaux à générer, (2) le nombres de threads.
 
 ## Somme en parallèle
 
@@ -56,26 +92,6 @@ L'avantage est que la somme est connue, il s'agit de `n*(n+1)/2`.
 Utilisez la pour vérifier que votre programme est correcte.
 
 - votre programme prend à la ligne de commande deux entiers: (1) la taille du vecteur à sommer, (2) le nombres de threads.
-
-On rappelle qu'un thread Posix se crée avec:
-```c
-pthread_create(&tid, NULL, f, (void*) &f_args);
-```
-où `tid` est l'id du thread de type `pthread_t`,
-`f` la tâche à exécuter par le thread et `f_args` l'argument de `f`.
-On rappelle que `f` retourne un `void*`.
-
-Une fois les threads terminé, on joint ces dernier avec: 
-```c
-pthread_join(tid, NULL);
-```
-où `tid` est comme prédécemment l'id du thread de type `pthread_t`.
-
-On rappelle également que les définitions sont dans `pthread.h` et qu'il faut passer la librairie `pthread` pour l'éditeur de lien (avec `gcc` l'option est `-l`).
-Si nécessaire, installez cette librairie sur votre machine.
-
-Il s'agit d'un bref rappel. 
-Veuillez vous référer à votre cours de concurrence pour plus de détail ou au `man` de votre machine.
 
 ## Mesures de performance
 
