@@ -1,0 +1,12 @@
+#!/bin/bash
+
+module purge
+module load GCC/11.3.0  OpenMPI/4.1.4
+module load R/4.2.1
+
+#SBATCH -n 1
+#SBATCH -c 1
+#SBATCH -p debug-cpu
+#SBATCH -t 00:01:00
+
+Rscript para_median.r
