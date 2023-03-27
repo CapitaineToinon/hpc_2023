@@ -1,0 +1,12 @@
+{
+    "configurations": [
+        {
+            "name": "Ubuntu",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "${HOME}/opt/usr/local/include"
+            ]
+        }
+    ],
+    "version": 4
+}
