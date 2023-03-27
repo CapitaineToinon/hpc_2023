@@ -1,5 +1,10 @@
 #include "common.h"
 
+double *create(int n, int m)
+{
+    return (double *)malloc(n * m * sizeof(double));
+}
+
 int get_args(int argc, char **argv, int *n, int *m, int *iter_count)
 {
     if (argc < 4)
@@ -17,7 +22,7 @@ int get_args(int argc, char **argv, int *n, int *m, int *iter_count)
 
 double *init(int n, int m)
 {
-    double *u = (double *)malloc(n * m * sizeof(double));
+    double *u = create(n, m);
 
     for (int i = 0; i < n; i++)
     {
@@ -80,15 +85,55 @@ double *init(int n, int m)
     return u;
 }
 
+double *init_numbered(int n, int m)
+{
+    double *u = create(n, m);
+
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < m; j++)
+        {
+            u[i * m + j] = i * m + j;
+        }
+    }
+
+    return u;
+}
+
 void print_ary(double *ary, int n, int m)
 {
     for (int i = 0; i < n; i++)
     {
         for (int j = 0; j < m; j++)
         {
-            printf("%.2f ", ary[i * m + j]);
+            printf("%05.2f ", ary[i * m + j]);
         }
 
         printf("\n");
     }
+}
+
+void solve_for(double *u, int n, int m, int iter_count)
+{
+    double *u_next = create(n, m);
+    memcpy(u_next, u, n * m * sizeof(double));
+
+    for (int iter = 0; iter < iter_count; iter++)
+    {
+        for (int i = 1; i < n - 1; i++)
+        {
+            for (int j = 1; j < m - 1; j++)
+            {
+                u_next[i * m + j] = (u[(i - 1) * m + j] +
+                                     u[(i + 1) * m + j] +
+                                     u[i * m + j - 1] +
+                                     u[i * m + j + 1]) /
+                                    4;
+            }
+        }
+
+        memcpy(u, u_next, n * m * sizeof(double));
+    }
+
+    free(u_next);
 }

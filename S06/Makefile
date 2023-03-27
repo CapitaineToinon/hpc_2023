@@ -9,8 +9,7 @@ build: common
 build_simple: common
 	$(CC) *.o -o simple.out simple.c
 
-all: build
-	./laplace.out
+all: clean build build_simple
 
 clean:
-	rm *.out *.o
+	rm -f *.out *.o
