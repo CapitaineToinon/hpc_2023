@@ -129,6 +129,8 @@ void solve_for(double *u, int n, int m, int iter_count)
                                      u[i * m + j - 1] +
                                      u[i * m + j + 1]) /
                                     4;
+
+                u_next[i * m + j] = -1;
             }
         }
 

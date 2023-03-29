@@ -3,11 +3,12 @@
 
 #define MIN(a, b) ((a) < (b) ? (a) : (b))
 #define MAX(a, b) ((a) > (b) ? (a) : (b))
+#define OVERLAP 1
 
 double *solve(int n, int m, int iter_count)
 {
-    // double *u = init_numbered(n, m);
-    double *u = init(n, m);
+    double *u = init_numbered(n, m);
+    // double *u = init(n, m);
 
     // if (n < 3 || m < 3)
     // {
@@ -76,16 +77,32 @@ double *solve(int n, int m, int iter_count)
      */
     MPI_Scatterv(u, sendcounts, senddispls, MPI_DOUBLE, u, sendcounts[myRank], MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
-    if (myRank == 1)
+    for (int i = 0; i < iter_count; i++)
     {
-        sleep(1);
+
+        MPI_Request req;
+        solve_for(u, sendcounts[myRank] / m, m, 1);
+
+        if (myRank > 0)
+        {
+            MPI_Isend(u + m, m, MPI_DOUBLE, myRank - 1, 0, MPI_COMM_WORLD, &req);
+            MPI_Recv(u, m, MPI_DOUBLE, myRank - 1, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+        }
+
+        if (myRank < nProc - 1)
+        {
+            MPI_Isend(u + sendcounts[myRank] - (m * 2), m, MPI_DOUBLE, myRank + 1, 0, MPI_COMM_WORLD, &req);
+            MPI_Recv(u + sendcounts[myRank] - m, m, MPI_DOUBLE, myRank + 1, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+        }
+
+        if (myRank == 1)
+        {
+            sleep(1);
+        }
+
+        printf("myRank: %d iter %d, u: \n", myRank, i);
+        print_ary(u, sendcounts[myRank] / m, m);
     }
-
-    // solve locally
-    solve_for(u, sendcounts[myRank] / m, m, iter_count);
-
-    printf("myRank: %d, u: \n", myRank);
-    print_ary(u, sendcounts[myRank] / m, m);
 
     MPI_Gatherv(u + m, recvcounts[myRank], MPI_DOUBLE, u + m, recvcounts, senddispls, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
@@ -115,7 +132,8 @@ int main(int argc, char **argv)
     if (myRank == 0)
     {
         sleep(2);
-        double *s = init(n, m);
+        // double *s = init(n, m);
+        double *s = init_numbered(n, m);
         solve_for(s, n, m, iter_count);
         printf("Expected:\n");
         print_ary(s, n, m);
