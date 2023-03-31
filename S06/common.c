@@ -1,10 +1,21 @@
 #include "common.h"
 
+/// @brief Create a 2D array of doubles
+/// @param n amount of lines
+/// @param m amount of columns
+/// @return pointer to the array
 double *create(int n, int m)
 {
     return (double *)malloc(n * m * sizeof(double));
 }
 
+/// @brief Parses the arguments required for the program
+/// @param argc
+/// @param argv
+/// @param n pointer to the n variable, amount of lines
+/// @param m pointer to the m variable, amount of columns
+/// @param iter_count pointer to the iter_count variable, amount of iterations
+/// @return 0 if success, 1 if failure
 int get_args(int argc, char **argv, int *n, int *m, int *iter_count)
 {
     if (argc < 4)
@@ -17,9 +28,13 @@ int get_args(int argc, char **argv, int *n, int *m, int *iter_count)
     *m = atoi(argv[2]);
     *iter_count = atoi(argv[3]);
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 
+/// @brief Creates a 2D array of doubles and initializes it with the correct starting values values
+/// @param n amount of lines
+/// @param m amount of columns
+/// @return pointer to the array
 double *init(int n, int m)
 {
     double *u = create(n, m);
@@ -85,57 +100,65 @@ double *init(int n, int m)
     return u;
 }
 
+/// @brief Creates a 2D array of doubles and initializes each value with its index
+/// @param n amount of lines
+/// @param m amount of columns
+/// @return pointer to the array
 double *init_numbered(int n, int m)
 {
     double *u = create(n, m);
 
-    for (int i = 0; i < n; i++)
+    for (int i = 0; i < n * m; i++)
     {
-        for (int j = 0; j < m; j++)
-        {
-            u[i * m + j] = i * m + j;
-        }
+        u[i] = i;
     }
 
     return u;
 }
 
-void print_ary(double *ary, int n, int m)
+/// @brief Solves the heat equation into the u_next array given the u array
+/// @param u pointer to the current state
+/// @param u_next pointer to the next state
+/// @param n amount of lines
+/// @param m amount of columns
+void solve(double *u, double *u_next, int n, int m)
 {
-    for (int i = 0; i < n; i++)
+    for (int i = 1; i < n - 1; i++)
     {
-        for (int j = 0; j < m; j++)
+        for (int j = 1; j < m - 1; j++)
         {
-            printf("%05.2f ", ary[i * m + j]);
+            u_next[i * m + j] = (u[(i - 1) * m + j] +
+                                 u[(i + 1) * m + j] +
+                                 u[i * m + j - 1] +
+                                 u[i * m + j + 1]) /
+                                4;
         }
-
-        printf("\n");
     }
 }
 
-void solve_for(double *u, int n, int m, int iter_count)
+/// @brief Loops around the u_next array in the same way that solve does but fills it with the probe_value instead
+/// @param u pointer to the current state
+/// @param u_next pointer to the next state
+/// @param n amount of lines
+/// @param m amount of columns
+/// @param probe_value the probe value to fill the array with
+void fake_solve(double *u, double *u_next, int n, int m, int probe_value)
 {
-    double *u_next = create(n, m);
-    memcpy(u_next, u, n * m * sizeof(double));
-
-    for (int iter = 0; iter < iter_count; iter++)
+    for (int i = 1; i < n - 1; i++)
     {
-        for (int i = 1; i < n - 1; i++)
+        for (int j = 1; j < m - 1; j++)
         {
-            for (int j = 1; j < m - 1; j++)
-            {
-                u_next[i * m + j] = (u[(i - 1) * m + j] +
-                                     u[(i + 1) * m + j] +
-                                     u[i * m + j - 1] +
-                                     u[i * m + j + 1]) /
-                                    4;
-
-                u_next[i * m + j] = -1;
-            }
+            u_next[i * m + j] = probe_value;
         }
-
-        memcpy(u, u_next, n * m * sizeof(double));
     }
+}
 
-    free(u_next);
+/// @brief Swaps the pointers of two arrays
+/// @param a pointer to the first array
+/// @param b pointer to the second array
+void swap(double **a, double **b)
+{
+    double *tmp = *a;
+    *a = *b;
+    *b = tmp;
 }

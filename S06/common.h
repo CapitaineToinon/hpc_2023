@@ -19,7 +19,8 @@
 int get_args(int argc, char **argv, int *n, int *m, int *iter_count);
 double *init(int n, int m);
 double *init_numbered(int n, int m);
-void print_ary(double *ary, int n, int m);
-void solve_for(double *u, int n, int m, int iter_count);
+void solve(double *u, double *u_next, int n, int m);
+void fake_solve(double *u, double *u_next, int n, int m, int probe_value);
+void swap(double **a, double **b);
 
 #endif

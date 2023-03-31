@@ -5,7 +5,11 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 "${HOME}/opt/usr/local/include"
+            ],
+            "defines": [
+                "DEBUG"
             ]
+
         }
     ],
     "version": 4
